@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import messagebox
 import cv2
 import numpy as np
-from assets.filter_toolkit import show_filter_session
+from .assets.filter_toolkit import show_filter_session
 
 
 # ---------- Define filters ----------
@@ -56,6 +56,7 @@ def Smooth(parent, image_bgr):
         np.ndarray (BGR) if user applied filters
         None if user cancelled
     """
+    image_bgr = cv2.resize(image_bgr, (300, 400))
     return show_filter_session(
         parent,
         image_bgr,
