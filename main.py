@@ -13,13 +13,34 @@ from pages.Sharp import Sharp
 from pages.Noise import Noise
 
 img_path = None
+out = None
+org = None
+
+
+def read_image():
+    global img_path, img_label, img_tk
+    if img_path:
+        img_pil = Image.open(img_path)
+        img_pil.thumbnail((400, 300))
+        img_tk = ImageTk.PhotoImage(img_pil)
+        img_label.config(image=img_tk)
+        img_label.image = img_tk
+
+
+def reset_image():
+    global img_path, img_label, img_tk, org
+    if org:
+        img_path = org
+        read_image()
+        messagebox.showinfo("Reset", "Image reset to original")
 
 
 def select_image():
-    global img_path, img_label, img_tk
+    global img_path, img_label, img_tk, org
     img_path = filedialog.askopenfilename(
         title="Select Image", filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.bmp")]
     )
+    org = img_path
     if img_path:
         img_pil = Image.open(img_path)
         img_pil.thumbnail((400, 300))
@@ -39,16 +60,27 @@ def cv2_run():
 
 
 def Smooth_run(root):
-    
-    Smooth(root, cv2.imread(img_path))
+    global out, img_path
+    out = Smooth(root, cv2.imread(img_path))
+    cv2.imwrite("output.png", out)
+    img_path = "output.png"
+    read_image()
 
 
 def Sharp_run(root):
-    Sharp(root, cv2.imread(img_path))
+    global out, img_path
+    out = Sharp(root, cv2.imread(img_path))
+    cv2.imwrite("output.png", out)
+    img_path = "output.png"
+    read_image()
 
 
 def Noise_run(root):
-    Noise(root, cv2.imread(img_path))
+    global out, img_path
+    out = Noise(root, cv2.imread(img_path))
+    cv2.imwrite("output.png", out)
+    img_path = "output.png"
+    read_image()
 
 
 root = tk.Tk()
@@ -56,7 +88,7 @@ root.title("Image Processing Application")
 root.geometry("800x600")
 root.resizable(False, False)
 
-# Configure grid weights for proper resizing
+
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=1)
@@ -75,11 +107,11 @@ img_btn.grid(row=1, column=0, pady=10, padx=5)
 run_btn = ttk.Button(root, text="Run CV2", command=cv2_run)
 run_btn.grid(row=1, column=1, pady=10, padx=5)
 
-clr_btn = ttk.Button(root, text="Clear Image", command=lambda: img_label.config(image=ImageTk.PhotoImage(img_def)))
+clr_btn = ttk.Button(root, text="Reset Image", command=reset_image)
 clr_btn.grid(row=1, column=2, pady=10, padx=5)
 
-filter_lbl = ttk.Label(root, text="Select Filter:",font=("Arial", 20, "bold"))
-filter_lbl.grid(row=2, column=0, pady=10, padx=5,columnspan=3)
+filter_lbl = ttk.Label(root, text="Select Filter:", font=("Arial", 20, "bold"))
+filter_lbl.grid(row=2, column=0, pady=10, padx=5, columnspan=3)
 
 smooth_btn = ttk.Button(root, text="Smooth", command=lambda: Smooth_run(root))
 smooth_btn.grid(row=3, column=0, pady=10, padx=1)
