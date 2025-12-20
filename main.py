@@ -1,13 +1,15 @@
-from filters.smooth.median import median
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+import threading
+import os
+import cv2
+from PIL import Image, ImageTk
+import numpy as np
+import time
+import matplotlib.pyplot as plt
 
-import pages.Noise as Noise
-
-def main():
-    print("Hello from project!")
-    img = cv2.imread('sample.jpg')
-    out = median(img, ksize=5)
-    exp = cv2.imwrite('output.jpg', out)
-    Noise.printer()
-
-if __name__ == "__main__":
-    main()
+root = tk.Tk()
+root.title("Image Processing Application")
+root.geometry("800x600")
+root.resizable(False, False)
+root.mainloop()
