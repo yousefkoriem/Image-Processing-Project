@@ -26,7 +26,9 @@ import warnings
 
 ArrayLike = np.ndarray
 FilterFunc = Callable[[ArrayLike], ArrayLike]
-FilterDescriptor = Union[Tuple[str, FilterFunc], Tuple[str, FilterFunc, FilterFunc], Dict[str, Any]]
+FilterDescriptor = Union[
+    Tuple[str, FilterFunc], Tuple[str, FilterFunc, FilterFunc], Dict[str, Any]
+]
 
 
 # -------------------- Utilities --------------------
@@ -92,7 +94,9 @@ def _normalize_descriptor(desc: FilterDescriptor) -> Tuple[str, FilterFunc, Filt
         if len(desc) == 3:
             name, full, preview = desc
             return name, full, preview
-    raise ValueError("Filter descriptor must be (name, func) or (name, full, preview) or dict")
+    raise ValueError(
+        "Filter descriptor must be (name, func) or (name, full, preview) or dict"
+    )
 
 
 # -------------------- Main combined class --------------------
@@ -115,6 +119,7 @@ class FilterSession:
         run() -> Optional[np.ndarray]
             Shows modal popup, returns full-resolution processed BGR array (or None if canceled).
     """
+
     def __init__(
         self,
         parent,
@@ -144,7 +149,9 @@ class FilterSession:
 
         # images
         self.base_full = _ensure_bgr_uint8(image_bgr)
-        self.base_display = _fit_image_bgr(self.base_full, max_size=self.display_max_size)
+        self.base_display = _fit_image_bgr(
+            self.base_full, max_size=self.display_max_size
+        )
         self.preview_display = self.base_display.copy()
 
         # chains for replay
@@ -170,7 +177,13 @@ class FilterSession:
         self._tk_preview = _bgr_to_photoimage(self.preview_display)
         label_widget.configure(image=self._tk_preview)
 
-    def _on_filter_click(self, full_func: FilterFunc, preview_func: FilterFunc, name: str, preview_label: ttk.Label):
+    def _on_filter_click(
+        self,
+        full_func: FilterFunc,
+        preview_func: FilterFunc,
+        name: str,
+        preview_label: ttk.Label,
+    ):
         """Handle filter button click: update preview and store chain."""
         try:
             if self.cumulative:
@@ -216,7 +229,9 @@ class FilterSession:
     def _show_error(self, message: str):
         err = tk.Toplevel(self.top or self.parent)
         err.title("Error")
-        tk.Label(err, text=message, padx=10, pady=8, wraplength=420, justify="left").pack()
+        tk.Label(
+            err, text=message, padx=10, pady=8, wraplength=420, justify="left"
+        ).pack()
         tk.Button(err, text="OK", command=err.destroy).pack(pady=6)
         err.transient(self.top or self.parent)
         err.grab_set()
@@ -238,31 +253,50 @@ class FilterSession:
         left = ttk.Frame(self.top)
         left.grid(row=0, column=0, padx=8, pady=8, sticky="n")
 
-        ttk.Label(left, text="Filters", font=("TkDefaultFont", 10, "bold")).pack(pady=(0, 6))
+        ttk.Label(left, text="Filters", font=("TkDefaultFont", 10, "bold")).pack(
+            pady=(0, 6)
+        )
         for name, full_f, preview_f in self._filters:
             btn = ttk.Button(
                 left,
                 text=name,
                 width=self.button_width,
-                command=lambda ff=full_f, pf=preview_f, nm=name: self._on_filter_click(ff, pf, nm, preview_label),
+                command=lambda ff=full_f, pf=preview_f, nm=name: self._on_filter_click(
+                    ff, pf, nm, preview_label
+                ),
             )
             btn.pack(pady=2)
 
         ttk.Separator(left, orient="horizontal").pack(fill="x", pady=6)
-        ttk.Button(left, text="Reset", width=self.button_width, command=lambda: self._on_reset(preview_label)).pack(pady=3)
-        ttk.Button(left, text="Apply", width=self.button_width, command=self._on_apply).pack(pady=3)
-        ttk.Button(left, text="Cancel", width=self.button_width, command=self._on_cancel).pack(pady=3)
+        ttk.Button(
+            left,
+            text="Reset",
+            width=self.button_width,
+            command=lambda: self._on_reset(preview_label),
+        ).pack(pady=3)
+        ttk.Button(
+            left, text="Apply", width=self.button_width, command=self._on_apply
+        ).pack(pady=3)
+        ttk.Button(
+            left, text="Cancel", width=self.button_width, command=self._on_cancel
+        ).pack(pady=3)
 
         # Middle: base and preview
         mid = ttk.Frame(self.top)
         mid.grid(row=0, column=1, padx=8, pady=8)
 
-        ttk.Label(mid, text="Base (unchanged)").pack()
-        base_label = ttk.Label(mid)
+        # Base image (left)
+        base_frame = ttk.Frame(mid)
+        base_frame.pack(side="left", padx=4)
+        ttk.Label(base_frame, text="Base (unchanged)").pack()
+        base_label = ttk.Label(base_frame)
         base_label.pack(padx=4, pady=4)
 
-        ttk.Label(mid, text="Preview").pack(pady=(8, 0))
-        preview_label = ttk.Label(mid)
+        # Preview image (right)
+        preview_frame = ttk.Frame(mid)
+        preview_frame.pack(side="left", padx=4)
+        ttk.Label(preview_frame, text="Preview").pack(pady=(0, 0))
+        preview_label = ttk.Label(preview_frame)
         preview_label.pack(padx=4, pady=4)
 
         # initialize images
@@ -278,7 +312,9 @@ class FilterSession:
 
 
 # -------------------- Convenience one-liner --------------------
-def show_filter_session(parent, image_bgr: ArrayLike, filters: Sequence[FilterDescriptor], **kwargs) -> Optional[ArrayLike]:
+def show_filter_session(
+    parent, image_bgr: ArrayLike, filters: Sequence[FilterDescriptor], **kwargs
+) -> Optional[ArrayLike]:
     """
     Quick helper: show popup with given filters and image and return processed image.
     kwargs forwarded to FilterSession constructor (display_max_size, cumulative, title, ...).
