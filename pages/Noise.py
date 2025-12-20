@@ -1,2 +1,2 @@
-def printer():
-    print("This is Noise page")
+def Noise(root):
+    return None
