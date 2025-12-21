@@ -5,10 +5,7 @@ Minimal example that imports filter_toolkit and uses show_filter_session.
 Run this with a Tk-capable environment (on WSL make sure python3-tk is installed).
 """
 
-import tkinter as tk
-from tkinter import messagebox
 import cv2
-import numpy as np
 from .assets.filter_toolkit import show_filter_session
 from filters.noise import salt, pepper, salt_and_pepper
 
