@@ -29,7 +29,7 @@ FILTERS = [
 ]
 
 
-def Sharp(parent, image_bgr):
+def Noise(parent, image_bgr):
     """
     Entry point for the smoothing genre.
     The main UI should call ONLY this function.
