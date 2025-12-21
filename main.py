@@ -1,12 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-import threading
 import os
 import cv2
 from PIL import Image, ImageTk
-import numpy as np
-import time
-import matplotlib.pyplot as plt
 
 from pages.Smooth import Smooth
 from pages.Sharp import Sharp
