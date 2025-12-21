@@ -10,36 +10,27 @@ from tkinter import messagebox
 import cv2
 import numpy as np
 from .assets.filter_toolkit import show_filter_session
+from filters.smooth import min, max, gauss, mean, median
 
 
 # ---------- Define filters ----------
-def gaussian_full(k=7):
-    return lambda img: cv2.GaussianBlur(img, (k, k), 0)
-
-
-def gaussian_preview():
-    return lambda img: cv2.GaussianBlur(img, (5, 5), 0)
-
-
-def sharpen():
-    kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32)
-    return lambda img: cv2.filter2D(img, -1, kernel)
-
-
-def add_noise(amount=0.03):
-    def f(img):
-        out = img.astype(np.float32) / 255.0
-        out = np.clip(out + np.random.randn(*out.shape) * amount, 0.0, 1.0)
-        return (out * 255).astype(np.uint8)
-
-    return f
-
+def Min(ksize=3):
+    return lambda img: min.Min(img, ksize)
+def Max(ksize=3):
+    return lambda img: max.Max(img, ksize)
+def Gaussian(ksize=3):
+    return lambda img: gauss.Gaussian(img, ksize)
+def Mean(ksize=3):
+    return lambda img: mean.Mean(img, ksize)
+def Median(ksize=3):
+    return lambda img: median.Median(img, ksize)
 
 FILTERS = [
-    ("Gaussian Blur (HQ)", gaussian_full(9), gaussian_preview()),
-    ("Sharpen", sharpen()),
-    ("Tiny Noise", add_noise(0.02)),
-    ("Invert", lambda img: cv2.bitwise_not(img)),
+    ("Gaussian Blur (HQ)", Gaussian(3)),
+    ("Mean Filter", Mean(3)),
+    ("Median Filter", Median(3)),
+    ("Min Filter", Min(3)),
+    ("Max Filter", Max(3)),
 ]
 
 
@@ -56,7 +47,7 @@ def Smooth(parent, image_bgr):
         np.ndarray (BGR) if user applied filters
         None if user cancelled
     """
-    image_bgr = cv2.resize(image_bgr, (300, 400))
+    image_bgr = cv2.resize(image_bgr, (500, 500))
     return show_filter_session(
         parent,
         image_bgr,
