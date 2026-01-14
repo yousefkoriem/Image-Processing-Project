@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from tkinter import simpledialog
 
-def Sobel(img,keer):
+def Sobel(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
     kernel = simpledialog.askinteger(title="Kernel Size", prompt="Enter a Kernel length",minvalue=1,maxvalue=21)

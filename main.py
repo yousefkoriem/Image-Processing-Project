@@ -37,7 +37,7 @@ def clear_image():
     img_tk = ImageTk.PhotoImage(img_def)
     img_label.config(image=img_tk)
     img_label.image = img_tk
-    messagebox.showinfo("Image Cleared","Image Cleared Successfully")
+    messagebox.showinfo("Image Cleared", "Image Cleared Successfully")
 
 
 def select_image():

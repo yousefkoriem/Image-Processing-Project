@@ -12,15 +12,22 @@ from filters.sharp import laplace, sobel, prewitt
 
 # ---------- Define filters ----------
 
+
 def Laplacian():
     return lambda img: laplace.Laplacian(img)
+
+
 def Sobel():
-    return lambda img: sobel.Sobel(img,kernel=3)
+    return lambda img: sobel.Sobel(img)
+
+
 def Prewitt():
     return lambda img: prewitt.Prewitt(img)
+
+
 FILTERS = [
     ("Laplacian", Laplacian()),
-    ("Sobel",Sobel()),
+    ("Sobel", Sobel()),
     ("Prewitt", Prewitt()),
 ]
 
