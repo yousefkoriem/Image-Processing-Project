@@ -21,7 +21,7 @@ Team of five students:
 - [Ahmed Maher](https://github.com/ahmedmaheroo) — Smoother
 - [Hajer Fathi](https://github.com/HJR403) — Sharpner
 - [Yousef Rady](https://github.com/) — Noise Remover/ MainUI Developer
-- [Farah Ahmed](https://github.com/HJR403) — Documentation/Function Builder
+- [Farah Ahmed](https://github.com/Speedfarah77) — Documentation/Function Builder
 
 ## Requirements
 
