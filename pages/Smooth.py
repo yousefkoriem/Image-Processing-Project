@@ -8,26 +8,28 @@ Run this with a Tk-capable environment (on WSL make sure python3-tk is installed
 import cv2
 from .assets.filter_toolkit import show_filter_session
 from filters.smooth import min, max, gauss, mean, median
+from tkinter import simpledialog
 
 
 # ---------- Define filters ----------
-def Min(ksize=3):
-    return lambda img: min.Min(img, ksize)
-def Max(ksize=3):
-    return lambda img: max.Max(img, ksize)
-def Gaussian(ksize=3):
-    return lambda img: gauss.Gaussian(img, ksize)
-def Mean(ksize=3):
-    return lambda img: mean.Mean(img, ksize)
-def Median(ksize=3):
-    return lambda img: median.Median(img, ksize)
+def Min():
+    
+    return lambda img: min.Min(img)
+def Max():
+    return lambda img: max.Max(img)
+def Gaussian():
+    return lambda img: gauss.Gaussian(img)
+def Mean():
+    return lambda img: mean.Mean(img)
+def Median():
+    return lambda img: median.Median(img)
 
 FILTERS = [
-    ("Gaussian Blur (HQ)", Gaussian(3)),
-    ("Mean Filter", Mean(3)),
-    ("Median Filter", Median(3)),
-    ("Min Filter", Min(3)),
-    ("Max Filter", Max(3)),
+    ("Gaussian Blur (HQ)", Gaussian()),
+    ("Mean Filter", Mean()),
+    ("Median Filter", Median()),
+    ("Min Filter", Min()),
+    ("Max Filter", Max()),
 ]
 
 
