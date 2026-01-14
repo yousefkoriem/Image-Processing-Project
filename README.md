@@ -31,6 +31,7 @@ Team of five students:
 ```bash
 python -m venv .venv
 .venv\Scripts\activate   # Windows
+source .venv/bin/activate # Linux/MacOS
 pip install -r requirements.txt
 ```
 
